@@ -1,1 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Protest+Riot&family=Rubik&display=swap');
+
+.box {
+  display: flex;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 8.5px;
+  align-items: center;
+  border: 2px solid black;
+  margin-left: 20px;
+  height: 40px;
+  width: 300px;
+}
+
+.box input {
+  width: 100%;
+  margin-right: 12px;
+  margin-left: 5px;
+  outline: none;
+  border: none;
+  background: transparent;
+  height: 100%;
+}
+
+.search-icon {
+  margin-left: 10px;
+}
+
+.logo {
+  width: 140px;
+  height: auto;
+}
