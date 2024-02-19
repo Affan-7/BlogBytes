@@ -1,4 +1,6 @@
-const Header = () => {
+import {Link} from 'react-router-dom'
+
+function Header() {
   return (
     <header>
       <script
@@ -11,7 +13,7 @@ const Header = () => {
         style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)' }}
       >
         <div className='container justify-content-start'>
-          <a href='/'>
+          <Link to='/'>
             <svg
               className='logo'
               width='97'
@@ -26,7 +28,7 @@ const Header = () => {
                 fill='white'
               />
             </svg>
-          </a>
+          </Link>
           <div className='box'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
