@@ -30,3 +30,15 @@
   width: 140px;
   height: auto;
 }
+
+
+.hover:hover {
+  background-color: black;
+  border-color: black;
+  transition: background-color 0.4s ease;
+}
+
+.hover{
+  color: black;
+  border-color: black;
+}

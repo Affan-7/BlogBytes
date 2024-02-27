@@ -30,6 +30,14 @@ function Header() {
             </svg>
             <input type='text' placeholder='Search...' />
           </div>
+          <Link to='/login' className='ms-auto me-4'>
+            <button className='btn btn-outline-secondary hover'>Login</button>
+          </Link>
+          <Link to='/register'>
+            <button className='btn btn-outline-secondary hover'>
+              Create Account
+            </button>
+          </Link>
         </div>
       </nav>
     </header>
