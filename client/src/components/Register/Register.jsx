@@ -1,13 +1,18 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Register() {
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const navigate = useNavigate()
+  const [error, setError] = React.useState(null)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   async function registerUser(event) {
     event.preventDefault()
+    setIsLoading(true)
     const response = await fetch('http://localhost:3000/api/register', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -20,7 +25,14 @@ function Register() {
     })
 
     const data = await response.json()
-    console.log(data)
+
+    if (data.user) {
+      localStorage.setItem('token', data.user)
+      navigate('/')
+    } else {
+      setError(data.error)
+    }
+    setIsLoading(false)
   }
 
   return (
@@ -66,7 +78,7 @@ function Register() {
                 id='floatingEmail'
                 placeholder='name@example.com'
               />
-              <label htmlFor='floatingEmail'>Email address</label>
+              <label htmlFor='floatingEmail'>Email</label>
             </div>
             <div className='form-floating mb-4'>
               <input
@@ -79,7 +91,12 @@ function Register() {
               />
               <label htmlFor='floatingPassword'>Password</label>
             </div>
-            <button type='submit' className='btn btn-outline-secondary hover'>
+            {error && <div className='alert alert-danger'>{error}</div>}
+            <button
+              type='submit'
+              className='btn btn-outline-secondary hover'
+              disabled={isLoading}
+            >
               Create Account
             </button>
             <a style={{ float: 'right' }} href='/login'>
