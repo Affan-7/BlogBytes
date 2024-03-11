@@ -69,6 +69,16 @@ app.get('/', (req, res) => {
   res.send('Home')
 })
 
+app.get('/api/auth', (req, res) => {
+  const token = req.headers.authorization.split(' ')[1]
+  try {
+    jwt.verify(token, 'testing secret')
+    res.json({ status: 'ok' })
+  } catch (err) {
+    res.json({ status: 'error', error: 'Invalid token' })
+  }
+})
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })
