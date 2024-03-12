@@ -1,7 +1,23 @@
 import { Link } from 'react-router-dom'
 import logo from '../../assets/logo.svg'
+import profile from '../../assets/profile.svg'
+import auth from '../../utils/auth'
+import { useEffect, useState } from 'react'
+import Home from '../Home/Home'
 
 function Header() {
+  const [isAuthenticated, setIsAuthenticated] = useState()
+
+  useEffect(() => {
+    if (localStorage.getItem('token') != null) {
+      auth().then((result) => {
+        setIsAuthenticated(result)
+      })
+    } else {
+      setIsAuthenticated(false)
+    }
+  }, [Home])
+
   return (
     <header>
       <script
@@ -30,14 +46,27 @@ function Header() {
             </svg>
             <input type='text' placeholder='Search...' />
           </div>
-          <Link to='/login' className='ms-auto me-4'>
-            <button className='btn btn-outline-secondary hover'>Login</button>
-          </Link>
-          <Link to='/register'>
-            <button className='btn btn-outline-secondary hover'>
-              Create Account
-            </button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to='/write' className='ms-auto me-4'>
+                <button className='btn btn-outline-secondary hover'>
+                  Write
+                </button>
+              </Link>
+              <Link to='/profile'>
+                <img src={profile} className='profile' />
+              </Link>
+            </>
+          ) : (
+            <>
+              <button className='btn btn-outline-secondary hover'>Login</button>
+              <Link to='/register'>
+                <button className='btn btn-outline-secondary hover'>
+                  Create Account
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </header>
