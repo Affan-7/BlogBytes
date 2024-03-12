@@ -42,7 +42,7 @@
 .hover:hover {
   background-color: black;
   border-color: black;
-  transition: background-color 0.4s ease;
+  transition: background-color 0.6s ease;
 }
 
 .hover{
