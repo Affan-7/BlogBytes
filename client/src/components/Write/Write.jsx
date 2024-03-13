@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Strikethrough from '@sotaproject/strikethrough'
 import EditorJS from '@editorjs/editorjs'
@@ -8,6 +9,8 @@ import Paragraph from '@editorjs/paragraph'
 import ImageTool from '@editorjs/image'
 
 function Write() {
+  const navigate = useNavigate()
+
   const editor = new EditorJS({
     holder: 'editorjs',
     tools: {
@@ -33,8 +36,8 @@ function Write() {
         class: ImageTool,
         config: {
           endpoints: {
-            byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
-            byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+            byFile: 'http://localhost:3000/uploadFile', // Your backend file uploader endpoint
+            byUrl: 'http://localhost:3000/fetchUrl', // Your endpoint that provides uploading by Url
           },
         },
       },
@@ -69,10 +72,40 @@ function Write() {
   //   }
   // }, [])
 
+  async function publish() {
+    const editorData = await editor.save()
+    console.log(editorData)
+
+    const response = await fetch('http://localhost:3000/api/publish', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(editorData),
+    })
+
+    const data = await response.json()
+
+    console.log(data.status)
+
+    if (data.status == 'ok') {
+      navigate('/')
+    } else {
+      alert(data.error)
+    }
+  }
+
   return (
     <>
-      {/* <button>Log article</button> */}
       <div id='editorjs'></div>
+      <button
+        className='btn btn-outline-secondary hover'
+        style={{ marginLeft: '70%' }}
+        onClick={publish}
+      >
+        publish
+      </button>
     </>
   )
 }

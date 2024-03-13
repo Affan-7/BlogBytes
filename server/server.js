@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const User = require('./models/userModel')
+const Blog = require('./models/blogModel')
 const jwt = require('jsonwebtoken')
 
 const port = 3000
@@ -11,6 +12,15 @@ app.use(cors())
 app.use(express.json())
 
 mongoose.connect('mongodb://localhost:27017/blogbytes')
+
+function validateToken(token) {
+  try {
+    jwt.verify(token, 'testing secret')
+    return true
+  } catch (err) {
+    return false
+  }
+}
 
 app.post('/api/register', async (req, res) => {
   try {
@@ -71,12 +81,30 @@ app.get('/', (req, res) => {
 
 app.get('/api/auth', (req, res) => {
   const token = req.headers.authorization.split(' ')[1]
-  try {
-    jwt.verify(token, 'testing secret')
+  validateToken(token)
+    ? res.json({ status: 'ok' })
+    : res.json({ status: 'error', error: 'Invalid token' })
+})
+
+app.post('/api/publish', async (req, res) => {
+  const token = req.headers.authorization.split(' ')[1]
+
+  const tokenIsValid = validateToken(token)
+
+  if (tokenIsValid) {
+    const user = jwt.decode(token)
+
+    const blog = await Blog.create({
+      email: user.email,
+      blog: req.body,
+    })
+
     res.json({ status: 'ok' })
-  } catch (err) {
+  } else {
     res.json({ status: 'error', error: 'Invalid token' })
   }
+
+  console.dir(req.body, { depth: null })
 })
 
 app.listen(port, () => {
