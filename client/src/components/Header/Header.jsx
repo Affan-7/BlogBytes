@@ -50,29 +50,24 @@ function Header() {
           </div>
           {isAuthenticated ? (
             <>
-              {(location.pathname === '/' && (
+              {(location.pathname === '/write' && (
+                <>
+                  <Link to='/profile' className='ms-auto me-4'>
+                    <img src={profile} className='profile' />
+                  </Link>
+                </>
+              )) || (
                 <>
                   <Link to='/write' className='ms-auto me-4'>
                     <button className='btn btn-outline-secondary hover'>
                       Write
                     </button>
                   </Link>
-                  <Link to='/profile' className='me-4'>
-                    <img src={profile} className='profile' />
+                  <Link to='/profile'>
+                    <img src={profile} className='profile me-4' />
                   </Link>
                 </>
-              )) ||
-                (location.pathname === '/write' && (
-                  <>
-                    <Link to='/profile' className='ms-auto me-4'>
-                      <img src={profile} className='profile' />
-                    </Link>
-                  </>
-                )) || (
-                  <Link to='/profile' className='ms-auto'>
-                    <img src={profile} className='profile' />
-                  </Link>
-                )}
+              )}
             </>
           ) : (
             <>
