@@ -1,14 +1,16 @@
-import React from 'react'
+import { useContext, useState } from 'react'
+import TokenContext from '../../contexts/TokenContext'
 import { useNavigate } from 'react-router-dom'
 
 function Login() {
-  const [firstName, setFirstName] = React.useState('')
-  const [lastName, setLastName] = React.useState('')
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
-  const [error, setError] = React.useState(null)
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const { token, setToken } = useContext(TokenContext)
 
   async function loginUser(event) {
     event.preventDefault()
@@ -26,6 +28,7 @@ function Login() {
 
     if (data.user) {
       localStorage.setItem('token', data.user)
+      setToken(data.user)
       navigate('/')
     } else {
       setError(data.error)

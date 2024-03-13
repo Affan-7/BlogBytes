@@ -1,12 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import logo from '../../assets/logo.svg'
 import profile from '../../assets/profile.svg'
 import auth from '../../utils/auth'
-import { useEffect, useState } from 'react'
-import Home from '../Home/Home'
+import { useEffect, useState, useContext } from 'react'
+import TokenContext from '../../contexts/TokenContext'
 
 function Header() {
+  const location = useLocation()
   const [isAuthenticated, setIsAuthenticated] = useState()
+  const token = useContext(TokenContext)
 
   useEffect(() => {
     if (localStorage.getItem('token') != null) {
@@ -16,7 +18,7 @@ function Header() {
     } else {
       setIsAuthenticated(false)
     }
-  }, [Home])
+  }, [token])
 
   return (
     <header>
@@ -48,18 +50,37 @@ function Header() {
           </div>
           {isAuthenticated ? (
             <>
-              <Link to='/write' className='ms-auto me-4'>
-                <button className='btn btn-outline-secondary hover'>
-                  Write
-                </button>
-              </Link>
-              <Link to='/profile'>
-                <img src={profile} className='profile' />
-              </Link>
+              {(location.pathname === '/' && (
+                <>
+                  <Link to='/write' className='ms-auto me-4'>
+                    <button className='btn btn-outline-secondary hover'>
+                      Write
+                    </button>
+                  </Link>
+                  <Link to='/profile' className='me-4'>
+                    <img src={profile} className='profile' />
+                  </Link>
+                </>
+              )) ||
+                (location.pathname === '/write' && (
+                  <>
+                    <Link to='/profile' className='ms-auto me-4'>
+                      <img src={profile} className='profile' />
+                    </Link>
+                  </>
+                )) || (
+                  <Link to='/profile' className='ms-auto'>
+                    <img src={profile} className='profile' />
+                  </Link>
+                )}
             </>
           ) : (
             <>
-              <button className='btn btn-outline-secondary hover'>Login</button>
+              <Link to='/login' className='ms-auto me-4'>
+                <button className='btn btn-outline-secondary hover'>
+                  Login
+                </button>
+              </Link>
               <Link to='/register'>
                 <button className='btn btn-outline-secondary hover'>
                   Create Account
