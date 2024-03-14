@@ -107,6 +107,39 @@ app.post('/api/publish', async (req, res) => {
   console.dir(req.body, { depth: null })
 })
 
+app.get('/api/blogs', async (req, res) => {
+  const page = Number(req.query.page) || 1
+  const limit = 10
+  const skip = (page - 1) * limit
+
+  const blogs = await Blog.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+
+  const modifiedBlogs = await Promise.all(
+    blogs.map(async (blog) => {
+      const { blocks } = blog.blog
+      const title =
+        blocks.find((block) => block.type === 'header')?.data.text || ''
+      const body =
+        blocks
+          .find((block) => block.type === 'paragraph')
+          ?.data.text.split(' ')
+          .slice(0, 30)
+          .join(' ') + '...' || ''
+
+      const user = await User.findOne({ email: blog.email })
+      const author = user ? `${user.firstName} ${user.lastName}` : ''
+      const id = blog._id
+
+      return { title, body, author, id }
+    })
+  )
+
+  res.json(modifiedBlogs)
+})
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })

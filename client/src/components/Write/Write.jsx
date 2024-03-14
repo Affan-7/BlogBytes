@@ -74,7 +74,6 @@ function Write() {
 
   async function publish() {
     const editorData = await editor.save()
-    console.log(editorData)
 
     const response = await fetch('http://localhost:3000/api/publish', {
       method: 'POST',
@@ -86,8 +85,6 @@ function Write() {
     })
 
     const data = await response.json()
-
-    console.log(data.status)
 
     if (data.status == 'ok') {
       navigate('/')
