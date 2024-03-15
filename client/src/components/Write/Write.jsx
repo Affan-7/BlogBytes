@@ -57,21 +57,6 @@ function Write() {
     },
   })
 
-  /* The code is part of the "Log article" button */
-  // useEffect(() => {
-  //   const handleLogData = async () => {
-  //     const savedData = await editor.save()
-  //     console.log(savedData)
-  //   }
-
-  //   const logButton = document.querySelector('button')
-  //   logButton.addEventListener('click', handleLogData)
-
-  //   return () => {
-  //     logButton.removeEventListener('click', handleLogData)
-  //   }
-  // }, [])
-
   async function publish() {
     const editorData = await editor.save()
 

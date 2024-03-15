@@ -140,6 +140,11 @@ app.get('/api/blogs', async (req, res) => {
   res.json(modifiedBlogs)
 })
 
+app.get('/api/blog/:id', async (req, res) => {
+  const blog = await Blog.findById(req.params.id)
+  res.json(blog.blog)
+})
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })

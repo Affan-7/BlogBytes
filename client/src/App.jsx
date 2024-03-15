@@ -7,6 +7,7 @@ import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 import LandingPage from './components/LandingPage/LandingPage'
 import TokenProvider from './contexts/TokenProvider'
+import Blog from './components/Blog/Blog'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/landing' element={<LandingPage />} />
+          <Route path='/blog/:id' element={<Blog />} />
         </Routes>
       </TokenProvider>
     </Router>
